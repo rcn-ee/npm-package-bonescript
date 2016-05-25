@@ -24,16 +24,17 @@ npm_git_install () {
 		rm -rf /tmp/${wrepo}/
 	fi
 
+	wfile="${npm_project}-${package_version}-${git_version}-${node_version}"
 	cd /usr/local/lib/node_modules/
-	if [ -f ${npm_project}-${package_version}-${git_version}-${node_version}.tar.xz ] ; then
-		rm -rf ${npm_project}-${package_version}-${git_version}-${node_version}.tar.xz || true
+	if [ -f ${wfile}.tar.xz ] ; then
+		rm -rf ${wfile}.tar.xz || true
 	fi
-	tar -cJf ${npm_project}-${package_version}-${git_version}-${node_version}.tar.xz ${npm_project}/
+	tar -cJf ${wfile}.tar.xz ${npm_project}/
 	cd -
 
-	if [ ! -f ./deploy/${npm_project}-${package_version}-${git_version}-${node_version}.tar.xz ] ; then
-		cp -v ${npm_project}/${npm_project}-${package_version}-${git_version}-${node_version}.tar.xz ./deploy/
-		echo "New Build: ${npm_project}-${package_version}-${git_version}-${node_version}.tar.xz"
+	if [ ! -f ./deploy/${wfile}.tar.xz ] ; then
+		cp -v /usr/local/lib/node_modules/${wfile}.tar.xz ./deploy/
+		echo "New Build: ${wfile}.tar.xz"
 	fi
 }
 
