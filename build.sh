@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 npm_project="bonescript"
-git_repo="bonescript"
+git_project="bonescript"
 git_branch="0.5.x"
 git_user="https://github.com/jadonk"
 
