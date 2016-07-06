@@ -1,13 +1,13 @@
 #!/bin/bash -e
 
-npm_project="bonescript"
-git_project="bonescript"
-git_branch="0.5.x"
-git_user="https://github.com/jadonk"
+DIR=$PWD
 
 export NODE_PATH=/usr/local/lib/node_modules
 
 npm_options="--unsafe-perm=true --progress=false --loglevel=error --prefix /usr/local"
+
+echo "Resetting: /usr/local/lib/node_modules/"
+rm -rf /usr/local/lib/node_modules/* || true
 
 npm_git_install () {
 	if [ -d /usr/local/lib/node_modules/${npm_project}/ ] ; then
@@ -42,6 +42,27 @@ npm_git_install () {
 	fi
 }
 
+npm_pkg_install () {
+	if [ -d /usr/local/lib/node_modules/${npm_project}/ ] ; then
+		rm -rf /usr/local/lib/node_modules/${npm_project}/ || true
+	fi
+
+	TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options} ${npm_project}@${package_version}
+
+	wfile="${npm_project}-${package_version}-${node_version}"
+	cd /usr/local/lib/node_modules/
+	if [ -f ${wfile}.tar.xz ] ; then
+		rm -rf ${wfile}.tar.xz || true
+	fi
+	tar -cJf ${wfile}.tar.xz ${npm_project}/
+	cd -
+
+	if [ ! -f ./deploy/${wfile}.tar.xz ] ; then
+		cp -v /usr/local/lib/node_modules/${wfile}.tar.xz ./deploy/
+		echo "New Build: ${wfile}.tar.xz"
+	fi
+}
+
 npm_install () {
 	node_bin="/usr/bin/nodejs"
 	npm_bin="/usr/bin/npm"
@@ -52,7 +73,15 @@ npm_install () {
 	echo "npm: [`${node_bin} ${npm_bin} --version`]"
 	echo "node: [`${node_bin} --version`]"
 
-	npm_git_install
+#	npm_project="bonescript"
+#	git_project="bonescript"
+#	git_branch="0.5.x"
+#	git_user="https://github.com/jadonk"
+#	npm_git_install
+
+	npm_project="bonescript"
+	package_version="0.5.0"
+	npm_pkg_install
 }
 
 npm_install
