@@ -49,8 +49,10 @@ npm_pkg_install () {
 
 	TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options} ${npm_project}@${package_version}
 
-	wfile="${npm_project}-${package_version}-${node_version}"
+	wfile="${npm_project}-${package_version}-${node_version}-rcnee1"
 	cd /usr/local/lib/node_modules/
+exit 
+#	sed
 	if [ -f ${wfile}.tar.xz ] ; then
 		rm -rf ${wfile}.tar.xz || true
 	fi
