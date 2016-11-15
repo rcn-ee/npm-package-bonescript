@@ -75,15 +75,15 @@ npm_install () {
 	echo "npm: [`${node_bin} ${npm_bin} --version`]"
 	echo "node: [`${node_bin} --version`]"
 
-#	npm_project="bonescript"
-#	git_project="bonescript"
-#	git_branch="0.5.x"
-#	git_user="https://github.com/jadonk"
-#	npm_git_install
-
 	npm_project="bonescript"
-	package_version="0.5.0"
-	npm_pkg_install
+	git_project="bonescript"
+	git_branch="master"
+	git_user="https://github.com/jadonk"
+	npm_git_install
+
+#	npm_project="bonescript"
+#	package_version="0.5.0"
+#	npm_pkg_install
 }
 
 npm_install
