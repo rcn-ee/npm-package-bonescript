@@ -23,6 +23,18 @@ npm_git_install () {
 		cd /tmp/${git_project}/
 		package_version=$(cat package.json | grep version | awk -F '"' '{print $4}' || true)
 		git_version=$(git rev-parse --short HEAD)
+
+		unset node_version
+		node_version=$(/usr/bin/nodejs --version || true)
+		case "${node_version}" in
+		v4.*)
+			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
+			;;
+		v6.*)
+			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
+			;;
+		esac
+
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 		cd -
 		rm -rf /tmp/${git_project}/
