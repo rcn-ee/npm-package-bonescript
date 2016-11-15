@@ -32,6 +32,8 @@ npm_git_install () {
 			;;
 		v6.*)
 			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
+			patch -p1 < ${DIR}/node-serialport-v6.diff
+			patch -p1 < ${DIR}/node-epoll-v6.diff
 			;;
 		esac
 
