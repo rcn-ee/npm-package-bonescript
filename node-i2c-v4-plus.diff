@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index ea8be07..7940e9e 100644
+--- a/package.json
++++ b/package.json
+@@ -34,7 +34,7 @@
+   },
+   "optionalDependencies": {
+     "serialport": "2.0.6",
+-    "i2c": "0.2.1",
++    "i2c": "0.2.3",
+     "epoll": "0.1.17",
+     "pi-spi": "1.0.1"
+   },
