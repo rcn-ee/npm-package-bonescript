@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 7940e9e..f62efd1 100644
+--- a/package.json
++++ b/package.json
+@@ -33,7 +33,7 @@
+     "ffi": "2.0.0"
+   },
+   "optionalDependencies": {
+-    "serialport": "2.0.6",
++    "serialport": "3.1.2",
+     "i2c": "0.2.3",
+     "epoll": "0.1.17",
+     "pi-spi": "1.0.1"
