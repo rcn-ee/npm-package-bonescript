@@ -83,6 +83,10 @@ npm_pkg_install () {
 }
 
 npm_install () {
+	if [ ! -f /usr/lib/libroboticscape.so ] ; then
+		apt install -y roboticscape
+	fi
+
 	node_bin="/usr/bin/nodejs"
 	npm_bin="/usr/bin/npm"
 
