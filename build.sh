@@ -27,14 +27,17 @@ npm_git_install () {
 		unset node_version
 		node_version=$(/usr/bin/nodejs --version || true)
 		case "${node_version}" in
-		v4.*)
-			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
+		v0.12.*)
+			patch -p1 < ${DIR}/node-i2c-v0.12.diff
 			;;
-		v6.*)
-			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
-			patch -p1 < ${DIR}/node-serialport-v6.diff
-			patch -p1 < ${DIR}/node-epoll-v6.diff
-			;;
+#		v4.*)
+#			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
+#			;;
+#		v6.*)
+#			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
+#			patch -p1 < ${DIR}/node-serialport-v6.diff
+#			patch -p1 < ${DIR}/node-epoll-v6.diff
+#			;;
 		esac
 
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
