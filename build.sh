@@ -35,11 +35,12 @@ npm_git_install () {
 #		v4.*)
 #			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
 #			;;
-#		v6.*)
-#			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
-#			patch -p1 < ${DIR}/node-serialport-v6.diff
-#			patch -p1 < ${DIR}/node-epoll-v6.diff
-#			;;
+		v6.*)
+			patch -p1 < ${DIR}/node-serialport-v6.diff
+			;;
+		v8.*)
+			patch -p1 < ${DIR}/node-serialport-v8.diff
+			;;
 		esac
 
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
