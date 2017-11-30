@@ -43,6 +43,7 @@ npm_git_install () {
 			;;
 		esac
 
+		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}"
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 		cd -
 		rm -rf /tmp/${git_project}/
