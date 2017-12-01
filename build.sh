@@ -54,7 +54,7 @@ npm_git_install () {
 	if [ -f ${wfile}.tar.xz ] ; then
 		rm -rf ${wfile}.tar.xz || true
 	fi
-	tar -cJf ${wfile}.tar.xz ${npm_project}/
+	tar -HcJf ${wfile}.tar.xz ${npm_project}/
 	cd -
 
 	if [ ! -f ./deploy/${distro}/${wfile}.tar.xz ] ; then
