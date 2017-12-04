@@ -13,15 +13,18 @@ distro=$(lsb_release -cs)
 
 npm_git_install () {
 	if [ -d /usr/local/lib/node_modules/${npm_project}/ ] ; then
+		echo "Resetting: /usr/local/lib/node_modules/${npm_project}/"
 		rm -rf /usr/local/lib/node_modules/${npm_project}/ || true
 	fi
 
 	if [ -d /tmp/${git_project}/ ] ; then
+		echo "Resetting: /tmp/${git_project}/"
 		rm -rf /tmp/${git_project}/ || true
 	fi
 
 	git clone -b ${git_branch} ${git_user}/${git_project} /tmp/${git_project}
 	if [ -d /tmp/${git_project}/ ] ; then
+		echo "Cloning: ${git_user}/${git_project}"
 		cd /tmp/${git_project}/
 		package_version=$(cat package.json | grep version | awk -F '"' '{print $4}' || true)
 		git_version=$(git rev-parse --short HEAD)
