@@ -49,8 +49,9 @@ npm_git_install () {
 #		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}"
 #		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 
-		echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}"
-		tmp_package=$(TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project} | tail -1)
+		cd /tmp/
+		echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}/"
+		tmp_package=$(TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}/ | tail -1)
 
 		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}"
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}
