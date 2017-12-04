@@ -46,9 +46,6 @@ npm_git_install () {
 			;;
 		esac
 
-#		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}"
-#		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
-
 		cd /tmp/
 		echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}/"
 		tmp_package=$(TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}/ | tail -1)
@@ -56,7 +53,7 @@ npm_git_install () {
 		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}"
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}
 
-		cd -
+		cd $DIR/
 	fi
 
 	wfile="${npm_project}-${package_version}-${git_version}-${node_version}"
