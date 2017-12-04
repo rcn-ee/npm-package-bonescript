@@ -46,7 +46,6 @@ npm_git_install () {
 		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}"
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 		cd -
-		rm -rf /tmp/${git_project}/
 	fi
 
 	wfile="${npm_project}-${package_version}-${git_version}-${node_version}"
@@ -60,6 +59,10 @@ npm_git_install () {
 	if [ ! -f ./deploy/${distro}/${wfile}.tar.xz ] ; then
 		cp -v /usr/local/lib/node_modules/${wfile}.tar.xz ./deploy/${distro}/
 		echo "New Build: ${wfile}.tar.xz"
+	fi
+
+	if [ -d /tmp/${git_project}/ ] ; then
+		rm -rf /tmp/${git_project}/
 	fi
 }
 
