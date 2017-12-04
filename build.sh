@@ -50,10 +50,10 @@ npm_git_install () {
 #		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 
 		echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}"
-		TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}
+		tmp_package=$(TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project} | tail -1)
 
-		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_project}-${package_version}.tgz ${npm_options}"
-		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_project}-${package_version}.tgz ${npm_options}
+		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}"
+		TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}
 
 		cd -
 	fi
@@ -108,7 +108,11 @@ npm_install () {
 	npm_bin="/usr/bin/npm"
 
 	unset node_version
-	node_version=$(/usr/bin/nodejs --version || true)
+	node_version=$(${node_bin} --version || true)
+
+	unset npm_version
+	npm_version=$(${node_bin} ${npm_bin} --version || true)
+
 
 	echo "npm: [`${node_bin} ${npm_bin} --version`]"
 	echo "node: [`${node_bin} --version`]"
