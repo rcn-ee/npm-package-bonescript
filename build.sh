@@ -51,10 +51,9 @@ npm_git_install () {
 
 		echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}"
 		TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}
-		ls
-		exit 2
-		echo "TERM=dumb ${node_bin} ${npm_bin} install -g $(npm pack ${npm_project} | tail -1) ${npm_options}"
-		TERM=dumb ${node_bin} ${npm_bin} install -g $(npm pack ${npm_project} | tail -1) ${npm_options}
+
+		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_project}-${package_version}.tgz ${npm_options}"
+		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_project}-${package_version}.tgz ${npm_options}
 
 		cd -
 	fi
