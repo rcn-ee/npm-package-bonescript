@@ -2,14 +2,17 @@
 
 DIR=$PWD
 
+distro=$(lsb_release -cs)
+
+git config --global user.name "Robert Nelson"
+git config --global user.email robertcnelson@gmail.com
+
 export NODE_PATH=/usr/local/lib/node_modules
 
 npm_options="--unsafe-perm=true --progress=false --loglevel=error --prefix /usr/local"
 
 echo "Resetting: /usr/local/lib/node_modules/"
 rm -rf /usr/local/lib/node_modules/* || true
-
-distro=$(lsb_release -cs)
 
 npm_git_install () {
 	if [ -d /usr/local/lib/node_modules/${npm_project}/ ] ; then
@@ -79,16 +82,21 @@ npm_pkg_install () {
 		rm -rf /usr/local/lib/node_modules/${npm_project}/ || true
 	fi
 
-	TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options} ${npm_project}@${package_version}
+	cd /tmp/
+	echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}@${package_version}"
+	tmp_package=$(TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}@${package_version} | tail -1)
 
-	#wfile="${npm_project}-${package_version}-${node_version}"
-	wfile="${npm_project}-${package_version}-${node_version}-rcnee1"
+	echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}"
+	TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}
+
+	cd $DIR/
+
+	wfile="${npm_project}-${package_version}-${node_version}"
 	cd /usr/local/lib/node_modules/
-	sed -i -e 's:var/lib/cloud9:usr/share/bone101:g' bonescript/src/server.js
 	if [ -f ${wfile}.tar.xz ] ; then
 		rm -rf ${wfile}.tar.xz || true
 	fi
-	tar -cJf ${wfile}.tar.xz ${npm_project}/
+	tar -hcJf ${wfile}.tar.xz ${npm_project}/
 	cd -
 
 	if [ ! -f ./deploy/${distro}/${wfile}.tar.xz ] ; then
@@ -121,9 +129,9 @@ npm_install () {
 	git_user="https://github.com/jadonk"
 	npm_git_install
 
-#	npm_project="bonescript"
-#	package_version="0.5.0"
-#	npm_pkg_install
+	npm_project="winston"
+	package_version="2.1.1"
+	npm_pkg_install
 }
 
 npm_install
