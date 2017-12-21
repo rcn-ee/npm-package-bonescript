@@ -14,6 +14,9 @@ rm -rf /usr/lib/node_modules/npm/ || true
 
 apt install nodejs --reinstall
 
+echo "Resetting: /usr/local/lib/node_modules/"
+rm -rf /usr/local/lib/node_modules/* || true
+
 echo "npm: [/usr/bin/npm i -g npm@4.6.1]"
 /usr/bin/npm i -g npm@4.6.1
 
@@ -21,9 +24,6 @@ echo "npm-deb: [`${node_bin} /usr/bin/npm --version`]"
 echo "npm4: [`${node_bin} /usr/local/bin/npm --version`]"
 
 npm_options="--unsafe-perm=true --progress=false --loglevel=error --prefix /usr/local"
-
-echo "Resetting: /usr/local/lib/node_modules/"
-rm -rf /usr/local/lib/node_modules/* || true
 
 npm_git_install () {
 	if [ -d /usr/local/lib/node_modules/${npm_project}/ ] ; then
