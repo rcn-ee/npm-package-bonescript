@@ -21,7 +21,7 @@ echo "npm: [/usr/bin/npm i -g npm@4.6.1]"
 /usr/bin/npm i -g npm@4.6.1
 
 echo "npm-deb: [`${node_bin} /usr/bin/npm --version`]"
-echo "npm4: [`${node_bin} /usr/local/bin/npm --version`]"
+echo "npm4: [`${node_bin} /usr/lib/node_modules/npm/bin/npm-cli.js --version`]"
 
 npm_options="--unsafe-perm=true --progress=false --loglevel=error --prefix /usr/local"
 
@@ -110,7 +110,7 @@ npm_install () {
 	fi
 
 	node_bin="/usr/bin/nodejs"
-	npm_bin="/usr/local/bin/npm"
+	npm_bin="/usr/lib/node_modules/npm/bin/npm-cli.js"
 
 	unset node_version
 	node_version=$(${node_bin} --version || true)
