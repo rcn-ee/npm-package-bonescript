@@ -9,6 +9,14 @@ git config --global user.email robertcnelson@gmail.com
 
 export NODE_PATH=/usr/local/lib/node_modules
 
+rm -rf /usr/bin/npm || true
+rm -rf /usr/lib/node_modules/npm/ || true
+
+apt install nodejs --reinstall
+
+echo "npm: [npm i -g npm@4.6.1]"
+npm i -g npm@4.6.1
+
 npm_options="--unsafe-perm=true --progress=false --loglevel=error --prefix /usr/local"
 
 echo "Resetting: /usr/local/lib/node_modules/"
@@ -49,23 +57,18 @@ npm_git_install () {
 			;;
 		esac
 
-		cd /tmp/
-		echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}/"
-		tmp_package=$(TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}/ | tail -1)
-
-		echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}"
-		TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}
-
-		cd $DIR/
+		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
+		cd ${DIR}/
 	fi
 
+	echo "Packaging: ${npm_project}"
 	wfile="${npm_project}-${package_version}-${git_version}-${node_version}"
 	cd /usr/local/lib/node_modules/
 	if [ -f ${wfile}.tar.xz ] ; then
 		rm -rf ${wfile}.tar.xz || true
 	fi
-	tar -hcJf ${wfile}.tar.xz ${npm_project}/
-	cd -
+	tar -cJf ${wfile}.tar.xz ${npm_project}/
+	cd ${DIR}/
 
 	if [ ! -f ./deploy/${distro}/${wfile}.tar.xz ] ; then
 		cp -v /usr/local/lib/node_modules/${wfile}.tar.xz ./deploy/${distro}/
@@ -82,22 +85,15 @@ npm_pkg_install () {
 		rm -rf /usr/local/lib/node_modules/${npm_project}/ || true
 	fi
 
-	cd /tmp/
-	echo "TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}@${package_version}"
-	tmp_package=$(TERM=dumb ${node_bin} ${npm_bin} pack ${npm_project}@${package_version} | tail -1)
-
-	echo "TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}"
-	TERM=dumb ${node_bin} ${npm_bin} install -g ${tmp_package} ${npm_options}
-
-	cd $DIR/
+	TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options} ${npm_project}@${package_version}
 
 	wfile="${npm_project}-${package_version}-${node_version}"
 	cd /usr/local/lib/node_modules/
 	if [ -f ${wfile}.tar.xz ] ; then
 		rm -rf ${wfile}.tar.xz || true
 	fi
-	tar -hcJf ${wfile}.tar.xz ${npm_project}/
-	cd -
+	tar -cJf ${wfile}.tar.xz ${npm_project}/
+	cd ${DIR}/
 
 	if [ ! -f ./deploy/${distro}/${wfile}.tar.xz ] ; then
 		cp -v /usr/local/lib/node_modules/${wfile}.tar.xz ./deploy/${distro}/
