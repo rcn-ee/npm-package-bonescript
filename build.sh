@@ -151,7 +151,7 @@ npm_install () {
 	npm_project="bonescript"
 	git_project="bonescript"
 	git_branch="master"
-	git_sha="a8c216863c7fa84cdbb131cc747008cbd7c14a1c"
+	git_sha="9221feeaf97d1a91f317acd428ad2242a23761a3"
 	git_user="https://github.com/jadonk"
 	npm_git_install
 
