@@ -9,16 +9,31 @@ git config --global user.email robertcnelson@gmail.com
 
 export NODE_PATH=/usr/local/lib/node_modules
 
+echo "Resetting: /usr/bin/npm"
 rm -rf /usr/bin/npm || true
 rm -rf /usr/lib/node_modules/npm/ || true
 
+apt update
+apt upgrade
 apt install nodejs --reinstall
 
 echo "Resetting: /usr/local/lib/node_modules/"
 rm -rf /usr/local/lib/node_modules/* || true
 
-echo "npm: [/usr/bin/npm i -g npm@4.6.1]"
-/usr/bin/npm i -g npm@4.6.1
+#echo "npm: [/usr/bin/npm i -g npm@4.6.1]"
+#/usr/bin/npm i -g npm@4.6.1
+
+cd ../
+echo "Installing: npm-4.6.1.tgz from source"
+wget -c https://registry.npmjs.org/npm/-/npm-4.6.1.tgz
+if [ -d ./package/ ] ; then
+	rm -rf ./package/
+fi
+tar xf npm-4.6.1.tgz
+cd ./package/
+make install
+cd ../
+cd ./npm-package-bb-doc-bone101/
 
 echo "npm-deb: [`${node_bin} /usr/bin/npm --version`]"
 
@@ -31,6 +46,7 @@ fi
 
 npm_options="--unsafe-perm=true --progress=false --loglevel=error --prefix /usr/local"
 
+
 npm_git_install () {
 	if [ -d /usr/local/lib/node_modules/${npm_project}/ ] ; then
 		echo "Resetting: /usr/local/lib/node_modules/${npm_project}/"
@@ -42,22 +58,21 @@ npm_git_install () {
 		rm -rf /tmp/${git_project}/ || true
 	fi
 
+	echo "Cloning: ${git_user}/${git_project}"
 	git clone -b ${git_branch} ${git_user}/${git_project} /tmp/${git_project}
 	if [ -d /tmp/${git_project}/ ] ; then
-		echo "Cloning: ${git_user}/${git_project}"
 		cd /tmp/${git_project}/
+		if [ ! "x${git_sha}" = "x" ] ; then
+			git checkout ${git_sha}
+			unset git_sha
+		fi
+
 		package_version=$(cat package.json | grep version | awk -F '"' '{print $4}' || true)
 		git_version=$(git rev-parse --short HEAD)
 
 		unset node_version
 		node_version=$(/usr/bin/nodejs --version || true)
 		case "${node_version}" in
-		v0.12.*)
-			patch -p1 < ${DIR}/node-i2c-v0.12.diff
-			;;
-#		v4.*)
-#			patch -p1 < ${DIR}/node-i2c-v4-plus.diff
-#			;;
 		v6.*)
 			patch -p1 < ${DIR}/node-serialport-v6.diff
 			;;
@@ -65,6 +80,7 @@ npm_git_install () {
 			patch -p1 < ${DIR}/node-serialport-v8.diff
 			;;
 		esac
+		patch -p1 < ${DIR}/systemd.diff
 
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 		cd ${DIR}/
@@ -135,6 +151,7 @@ npm_install () {
 	npm_project="bonescript"
 	git_project="bonescript"
 	git_branch="master"
+	git_sha="a8c216863c7fa84cdbb131cc747008cbd7c14a1c"
 	git_user="https://github.com/jadonk"
 	npm_git_install
 
