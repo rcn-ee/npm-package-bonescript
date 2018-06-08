@@ -72,15 +72,15 @@ npm_git_install () {
 
 		unset node_version
 		node_version=$(/usr/bin/nodejs --version || true)
-		case "${node_version}" in
-		v6.*)
-			patch -p1 < ${DIR}/node-serialport-v6.diff
-			;;
-		v8.*)
-			patch -p1 < ${DIR}/node-serialport-v8.diff
-			;;
-		esac
-		patch -p1 < ${DIR}/systemd.diff
+#		case "${node_version}" in
+#		v6.*)
+#			patch -p1 < ${DIR}/node-serialport-v6.diff
+#			;;
+#		v8.*)
+#			patch -p1 < ${DIR}/node-serialport-v8.diff
+#			;;
+#		esac
+#		patch -p1 < ${DIR}/systemd.diff
 
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 		cd ${DIR}/
@@ -151,7 +151,7 @@ npm_install () {
 	npm_project="bonescript"
 	git_project="bonescript"
 	git_branch="master"
-	git_sha="9221feeaf97d1a91f317acd428ad2242a23761a3"
+	git_sha="a9ca418002664c0bb9a38c5b2a791b2e46b72687"
 	git_user="https://github.com/jadonk"
 	npm_git_install
 
