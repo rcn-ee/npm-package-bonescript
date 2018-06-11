@@ -80,14 +80,15 @@ npm_git_install () {
 #			patch -p1 < ${DIR}/node-serialport-v8.diff
 #			;;
 #		esac
-#		patch -p1 < ${DIR}/systemd.diff
+		patch -p1 < ${DIR}/0001-RFC-move-default-port-80-to-8000.patch
 
 		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
 		cd ${DIR}/
 	fi
 
 	echo "Packaging: ${npm_project}"
-	wfile="${npm_project}-${package_version}-${git_version}-${node_version}"
+	time=$(date +%Y%m%d)
+	wfile="${npm_project}-${package_version}-${git_version}-${node_version}-${time}"
 	cd /usr/local/lib/node_modules/
 	if [ -f ${wfile}.tar.xz ] ; then
 		rm -rf ${wfile}.tar.xz || true
