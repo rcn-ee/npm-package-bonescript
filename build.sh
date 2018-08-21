@@ -24,14 +24,22 @@ rm -rf /usr/local/lib/node_modules/* || true
 #/usr/bin/npm i -g npm@4.6.1
 
 cd ../
-echo "Installing: npm-4.6.1.tgz from source"
-wget -c https://registry.npmjs.org/npm/-/npm-4.6.1.tgz
+#echo "Installing: npm-4.6.1.tgz from source"
+#wget -c https://registry.npmjs.org/npm/-/npm-4.6.1.tgz
+
+echo "Installing: npm-6.3.0.tgz from source"
+wget -c https://registry.npmjs.org/npm/-/npm-6.3.0.tgz
+
 if [ -d ./package/ ] ; then
 	rm -rf ./package/
 fi
-tar xf npm-4.6.1.tgz
+#tar xf npm-4.6.1.tgz
+
+tar xf npm-6.3.0.tgz
+
 cd ./package/
-make install
+#make install
+make link
 cd ../
 cd ./npm-package-bb-doc-bone101/
 
@@ -44,7 +52,8 @@ if [ -f /usr/local/lib/node_modules/npm/bin/npm-cli.js ] ; then
 	echo "npm4-/usr/local/lib/: [`${node_bin} /usr/local/lib/node_modules/npm/bin/npm-cli.js --version`]"
 fi
 
-npm_options="--unsafe-perm=true --progress=false --loglevel=error --prefix /usr/local"
+npm_pre_options="--unsafe-perm=true --loglevel=error --prefix /tmp"
+npm_options="--unsafe-perm=true --loglevel=error --prefix /usr/local"
 
 
 npm_git_install () {
@@ -80,10 +89,12 @@ npm_git_install () {
 #			patch -p1 < ${DIR}/node-serialport-v8.diff
 #			;;
 #		esac
-		patch -p1 < ${DIR}/0001-RFC-move-default-port-80-to-8000.patch
+		#patch -p1 < ${DIR}/0001-RFC-move-default-port-80-to-8000.patch
 
-		TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options}
+		#https://techsparx.com/nodejs/news/2017/npm5-major-error.html
+		TERM=dumb ${node_bin} ${npm_bin} pack
 		cd ${DIR}/
+		TERM=dumb ${node_bin} ${npm_bin} install -g /tmp/${git_project}/*.tgz ${npm_options} --no-save
 	fi
 
 	echo "Packaging: ${npm_project}"
@@ -111,7 +122,16 @@ npm_pkg_install () {
 		rm -rf /usr/local/lib/node_modules/${npm_project}/ || true
 	fi
 
-	TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_options} ${npm_project}@${package_version}
+	if [ -d /tmp/lib/node_modules/${npm_project}/ ] ; then
+		rm -rf /tmp/lib/node_modules/${npm_project}/ || true
+	fi
+
+	#https://techsparx.com/nodejs/news/2017/npm5-major-error.html
+	TERM=dumb ${node_bin} ${npm_bin} install -g ${npm_pre_options} ${npm_project}@${package_version}
+	cd /tmp/lib/node_modules/${npm_project}/
+	TERM=dumb ${node_bin} ${npm_bin} pack
+	cd ${DIR}/
+	TERM=dumb ${node_bin} ${npm_bin} install -g /tmp/lib/node_modules/${npm_project}/*.tgz ${npm_options} --no-save
 
 	wfile="${npm_project}-${package_version}-${node_version}"
 	cd /usr/local/lib/node_modules/
@@ -152,7 +172,7 @@ npm_install () {
 	npm_project="bonescript"
 	git_project="bonescript"
 	git_branch="master"
-	git_sha="a9ca418002664c0bb9a38c5b2a791b2e46b72687"
+	git_sha="b968db7a2e051e4c7eae0accf113c13db1ef7ef7"
 	git_user="https://github.com/jadonk"
 	npm_git_install
 
