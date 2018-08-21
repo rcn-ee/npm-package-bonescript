@@ -148,8 +148,8 @@ npm_pkg_install () {
 }
 
 npm_install () {
-	if [ ! -f /usr/lib/libroboticscape.so ] ; then
-		apt install -y roboticscape
+	if [ ! -f /usr/lib/librobotcontrol.so ] ; then
+		apt install -y librobotcontrol
 	fi
 
 	node_bin="/usr/bin/nodejs"
